@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.6)
+cmake_minimum_required(VERSION 2.8.10.1)
 project(QtBuilder)
   #
   # Enable C and CXX languages so CMAKE_SIZEOF_VOID_P indicates whether
@@ -20,10 +20,10 @@ function(qb_get_qt_version_info version var_tarball_name var_tarball_md5)
     set(tarball_basename "qt-everywhere-opensource-src-")
   endif()
 
-  #set(qt_tgz_md5_464 "07d3e15d6d9a6aa219623897bd0aa2e5")
-  #set(qt_tgz_md5_474 "07d3e15d6d9a6aa219623897bd0aa2e5")
-  set(qt_tgz_md5_480 "e8a5fdbeba2927c948d9f477a6abe904")
+  set(qt_tgz_md5_464 "8ac880cc07a130c39607b65efd5e1421")
   set(qt_tgz_md5_481 "7960ba8e18ca31f0c6e4895a312f92ff")
+  set(qt_tgz_md5_482 "3c1146ddf56247e16782f96910a8423b")
+  set(qt_tgz_md5_483 "a663b6c875f8d7caa8ac9c30e4a4ec3b")
 
   set(tarball_name "${tarball_basename}${version}.tar.gz")
   set(tarball_md5 "${qt_tgz_md5_${var_suffix}}")
@@ -40,22 +40,14 @@ function(qb_get_qt_version_info version var_tarball_name var_tarball_md5)
 endfunction()
 
 
-set(QB_VERSION "4.8.1" CACHE STRING
+set(QB_VERSION "4.8.3" CACHE STRING
   "Version of Qt to download, build and install")
 
 set(VersionValues
-  4.6.0
-  4.6.1
-  4.6.2
-  4.6.3
   4.6.4
-  4.7.0
-  4.7.1
-  4.7.2
-  4.7.3
-  4.7.4
-  4.8.0
   4.8.1
+  4.8.2
+  4.8.3
 )
 
 set_property(CACHE QB_VERSION PROPERTY STRINGS ${VersionValues})
@@ -69,8 +61,8 @@ endif()
 set(QB_BASEDIR "${QB_BASEDIR_DEFAULT}" CACHE PATH
   "Local base directory for downloading and building")
 
-set(qt_server "http://download.qt.nokia.com")
-set(qt_baseurl "${qt_server}/qt/source")
+set(qt_server "http://releases.qt-project.org")
+set(qt_baseurl "${qt_server}/qt4/source")
 set(qt_version "${QB_VERSION}")
 qb_get_qt_version_info("${qt_version}" qt_tgz_name qt_tgz_md5)
 
