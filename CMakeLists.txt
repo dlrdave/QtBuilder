@@ -24,6 +24,8 @@ function(qb_get_qt_version_info version var_tarball_name var_tarball_md5)
   set(qt_tgz_md5_481 "7960ba8e18ca31f0c6e4895a312f92ff")
   set(qt_tgz_md5_482 "3c1146ddf56247e16782f96910a8423b")
   set(qt_tgz_md5_483 "a663b6c875f8d7caa8ac9c30e4a4ec3b")
+  set(qt_tgz_md5_484 "89c5ecba180cae74c66260ac732dc5cb")
+  set(qt_tgz_md5_500 "1a1b73f913a965f6b0cf02bb820c8a03")
 
   set(tarball_name "${tarball_basename}${version}.tar.gz")
   set(tarball_md5 "${qt_tgz_md5_${var_suffix}}")
@@ -40,7 +42,7 @@ function(qb_get_qt_version_info version var_tarball_name var_tarball_md5)
 endfunction()
 
 
-set(QB_VERSION "4.8.3" CACHE STRING
+set(QB_VERSION "5.0.0" CACHE STRING
   "Version of Qt to download, build and install")
 
 set(VersionValues
@@ -48,6 +50,8 @@ set(VersionValues
   4.8.1
   4.8.2
   4.8.3
+  4.8.4
+  5.0.0
 )
 
 set_property(CACHE QB_VERSION PROPERTY STRINGS ${VersionValues})
@@ -62,9 +66,14 @@ set(QB_BASEDIR "${QB_BASEDIR_DEFAULT}" CACHE PATH
   "Local base directory for downloading and building")
 
 set(qt_server "http://releases.qt-project.org")
-set(qt_baseurl "${qt_server}/qt4/source")
 set(qt_version "${QB_VERSION}")
 qb_get_qt_version_info("${qt_version}" qt_tgz_name qt_tgz_md5)
+
+if(qt_version VERSION_LESS 5.0.0)
+  set(qt_baseurl "${qt_server}/qt4/source")
+else()
+  set(qt_baseurl "${qt_server}/qt5/${qt_version}/single")
+endif()
 
 set(qt_md5 "${qt_tgz_md5}")
 set(qt_url "${qt_baseurl}/${qt_tgz_name}")
