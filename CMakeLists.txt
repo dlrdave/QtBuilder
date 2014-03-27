@@ -114,7 +114,7 @@ if(WIN32)
   set(cfg_cmd "configure.bat")
   set(prefix_arg "")
   set(other_args -opensource -confirm-license
-    -nomake demos -nomake examples
+    -nomake examples
     -shared -release
   )
 else()
@@ -128,7 +128,7 @@ else()
   set(cfg_cmd "configure")
   set(prefix_arg --prefix=${qt_dir})
   set(other_args --opensource --confirm-license
-    -nomake demos -nomake examples
+    -nomake examples
     -shared -release
   )
 
