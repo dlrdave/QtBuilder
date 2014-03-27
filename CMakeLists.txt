@@ -111,6 +111,7 @@ if(WIN32)
   #   and prefix is irrelevant...
   #
   set(qt_dir "${QB_BASEDIR}/${qt_version}-${suffix}")
+  set(cfg_cmd "configure.bat")
   set(prefix_arg "")
   set(other_args -opensource -confirm-license
     -nomake demos -nomake examples
@@ -124,6 +125,7 @@ else()
   # here for consistency with the Windows builds.
   #
   set(qt_dir "${QB_BASEDIR}/${qt_version}-${suffix}")
+  set(cfg_cmd "configure")
   set(prefix_arg --prefix=${qt_dir})
   set(other_args --opensource --confirm-license
     -nomake demos -nomake examples
@@ -162,7 +164,7 @@ ExternalProject_Add(qt
   DOWNLOAD_DIR ${QB_BASEDIR}/Downloads
   SOURCE_DIR ${qt_dir}
   BUILD_IN_SOURCE 1
-  CONFIGURE_COMMAND <SOURCE_DIR>/configure ${QB_CONFIGURE_ARGS}
+  CONFIGURE_COMMAND <SOURCE_DIR>/${cfg_cmd} ${QB_CONFIGURE_ARGS}
   BUILD_COMMAND ${build_cmd}
   INSTALL_COMMAND ""
   STEP_TARGETS download
