@@ -93,7 +93,6 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8)
   set(suffix "${suffix}-x64")
 endif()
 
-
 if(WIN32)
 #  if(NOT CMAKE_GENERATOR MATCHES "Makefile")
 #    message(FATAL_ERROR "
@@ -140,6 +139,14 @@ else()
   endif()
 endif()
 
+if(qt_version VERSION_LESS 5.0.0)
+  set(qt_bin_dir "${qt_dir}/bin")
+  set(qt_moc_v_output "Meta Object Compiler")
+else()
+  set(qt_bin_dir "${qt_dir}/qtbase/bin")
+  set(qt_moc_v_output "moc ")
+endif()
+
 # CACHE so users can add-to/modify the Qt configure args if necessary:
 #
 set(QB_CONFIGURE_ARGS ${prefix_arg} ${other_args} CACHE STRING
@@ -151,11 +158,18 @@ if(qt_md5)
 endif()
 
 
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/qt.gitignore" "#\n")
+
+
 if(WIN32)
   set(build_cmd "jom")
 else()
   set(build_cmd "$(MAKE)")
 endif()
+
+
+# Requirements for Qt 5.0 and up to build properly (at least on Windows with VS):
+# Run in a VS command prompt, with jom, perl and python also added to the PATH.
 
 
 ExternalProject_Add(qt
@@ -164,6 +178,15 @@ ExternalProject_Add(qt
   DOWNLOAD_DIR ${QB_BASEDIR}/Downloads
   SOURCE_DIR ${qt_dir}
   BUILD_IN_SOURCE 1
+  PATCH_COMMAND
+    ${CMAKE_COMMAND}
+      -E copy
+      "${CMAKE_CURRENT_BINARY_DIR}/qt.gitignore"
+      "<SOURCE_DIR>/.gitignore"
+    COMMAND ${CMAKE_COMMAND}
+      -E copy
+      "${CMAKE_CURRENT_BINARY_DIR}/qt.gitignore"
+      "<SOURCE_DIR>/qtbase/.gitignore"
   CONFIGURE_COMMAND <SOURCE_DIR>/${cfg_cmd} ${QB_CONFIGURE_ARGS}
   BUILD_COMMAND ${build_cmd}
   INSTALL_COMMAND ""
@@ -175,9 +198,10 @@ message(STATUS "suffix='${suffix}'")
 message(STATUS "qt_dir='${qt_dir}'")
 message(STATUS "qt_url='${qt_url}'")
 
-add_test(SmokeTest-Qt-${qt_version}-moc "${qt_dir}/bin/moc" "-v")
-add_test(SmokeTest-Qt-${qt_version}-qmake "${qt_dir}/bin/qmake" "-v")
-add_test(SmokeTest-Qt-${qt_version}-uic "${qt_dir}/bin/uic" "-v")
+
+add_test(SmokeTest-Qt-${qt_version}-moc "${qt_bin_dir}/moc" "-v")
+add_test(SmokeTest-Qt-${qt_version}-qmake "${qt_bin_dir}/qmake" "-v")
+add_test(SmokeTest-Qt-${qt_version}-uic "${qt_bin_dir}/uic" "-v")
 
 set_property(TEST SmokeTest-Qt-${qt_version}-moc PROPERTY
-  PASS_REGULAR_EXPRESSION "Meta Object Compiler")
+  PASS_REGULAR_EXPRESSION "${qt_moc_v_output}")
