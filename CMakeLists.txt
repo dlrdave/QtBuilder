@@ -19,6 +19,7 @@ function(qb_get_qt_version_info version var_tarball_name var_tarball_md5)
   set(qt_tgz_md5_485 "1864987bdbb2f58f8ae8b350dfdbe133")
   set(qt_tgz_md5_521 "a78408c887c04c34ce615da690e0b4c8")
   set(qt_tgz_md5_540 "e8654e4b37dd98039ba20da7a53877e6")
+  set(qt_tgz_md5_542 "fa1c4d819b401b267eb246a543a63ea5")
 
   set(tarball_name "${tarball_basename}${version}.tar.gz")
   set(tarball_md5 "${qt_tgz_md5_${var_suffix}}")
@@ -35,13 +36,14 @@ function(qb_get_qt_version_info version var_tarball_name var_tarball_md5)
 endfunction()
 
 
-set(QB_VERSION "5.4.0" CACHE STRING
+set(QB_VERSION "5.4.2" CACHE STRING
   "Version of Qt to download, build and install")
 
 set(VersionValues
   4.8.5
   5.2.1
   5.4.0
+  5.4.2
 )
 
 set_property(CACHE QB_VERSION PROPERTY STRINGS ${VersionValues})
