@@ -121,7 +121,9 @@ if(WIN32)
   set(prefix_arg "")
   set(other_args -opensource -confirm-license
     -nomake examples
-    -shared -release
+    -nomake tests
+    -opengl desktop
+    -static -debug-and-release
   )
 else()
 
@@ -135,7 +137,9 @@ else()
   set(prefix_arg --prefix=${qt_dir})
   set(other_args --opensource --confirm-license
     -nomake examples
-    -shared -release
+    -nomake tests
+    -opengl desktop
+    -static -debug-and-release
   )
 
   if(APPLE)
